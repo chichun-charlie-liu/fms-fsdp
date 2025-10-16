@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "yoco_fwd_test.py",
             "env":{},
-            // "cwd": "/app/fms-fsdp-fork/", //"~/projects/fms-fsdp-fork/",
+            "cwd": "/app/fms-fsdp-fork/", //"~/projects/fms-fsdp-fork/",
             "justMyCode": false,
             "args": [
 
