@@ -80,9 +80,9 @@
                 "--datasets","starcoder-codepile-v02-L1-noGPL,webhose_en,uspto_en,DMMathematics_split,arxiv_en,financial_research_papers,ieee_en,paperswithcode,peS2o,wikipedia_en,stackexchange,Openwebmath_filtered,Algebraic-stack,doabooks_en,LOCbooks,freelaw,pubmedcentral,EDGAR,Earnings_call_transcript,FIDC,sec_filing,FineWebv1.1",
                 "--weights","19,2,1,0.67,0.67,0.67,0.67,0.67,0.67,0.5,0.5,0.5,0.5,0.5,0.5,1,1,0.375,0.375,0.375,0.375,67.5",
                 "--tracker","wandb", //disable this for debug
-                "--tracker_dir","/gpfs/cliu",
+                "--tracker_dir","/gpfs/cliu/tracker_log",
                 "--tracker_project_name","example-project",
-                "--tracker_run_id","test",
+                "--tracker_run_id","yoco_test",
             ]
         },
         //torchrun --nnodes=${WORLD_SIZE} --node_rank=${RANK} --nproc_per_node=8 --rdzv_id=101 --rdzv_endpoint="${MASTER_ADDR}:${MASTER_PORT}"        
