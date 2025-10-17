@@ -34,7 +34,7 @@ def train(
     tokens_seen,
     cp_degree: int = 1,
 ):
-    if cfg.tracker:
+    if cfg.tracker and rank == 0:
         if cfg.tracker not in ["wandb", "aim", "tensorboard"]:
             raise ValueError(f"tracker {cfg.tracker} not supported.")
         tracker_dir = cfg.tracker_dir
@@ -46,36 +46,36 @@ def train(
                 import wandb  # type: ignore
             except ImportError:
                 raise ImportError("tracker is set to wandb but wandb is not installed.")
-            if rank == 0:
-                logger.info("--> wandb is enabled!")
-                try:
-                    wandb.init(
-                        project=project_name,
-                        dir=tracker_dir,
-                        resume="allow",
-                        id=run_id,
-                    )
-                except wandb.errors.UsageError:
-                    raise ValueError(
-                        "wandb failed to init, did you pass your wandb api key via WANDB_API_KEY?"
-                    )
-                wandb.config = asdict(cfg)
-                tracker_fn = wandb.log
+
+            logger.info("--> wandb is enabled!")
+            try:
+                wandb.init(
+                    project=project_name,
+                    dir=tracker_dir,
+                    resume="allow",
+                    id=run_id,
+                )
+            except wandb.errors.UsageError:
+                raise ValueError(
+                    "wandb failed to init, did you pass your wandb api key via WANDB_API_KEY?"
+                )
+            wandb.config = asdict(cfg)
+            tracker_fn = wandb.log
 
         if cfg.tracker == "aim":
             try:
                 from aim import Run  # type: ignore
             except ImportError:
                 raise ImportError("tracker is set to aim but aim is not installed.")
-            if rank == 0:
-                logger.info("--> aim is enabled!")
-                run = Run(
-                    experiment=project_name,
-                    repo=tracker_dir,
-                    run_hash=run_id,
-                )
-                run["hparams"] = asdict(cfg)
-                tracker_fn = run.track
+
+            logger.info("--> aim is enabled!")
+            run = Run(
+                experiment=project_name,
+                repo=tracker_dir,
+                run_hash=run_id,
+            )
+            run["hparams"] = asdict(cfg)
+            tracker_fn = run.track
 
         if cfg.tracker == "tensorboard":
             from torch.utils.tensorboard import SummaryWriter
