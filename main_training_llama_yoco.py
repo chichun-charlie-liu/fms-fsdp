@@ -42,7 +42,7 @@ def main(**kwargs):
         logging.basicConfig(
             filename=f"{cfg.ckpt_save_path}/{cfg.model_variant}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         )
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger(__name__).setLevel(logging.INFO)
         logger.info(f"--> running with these configs {cfg}")
 
     # some setups
