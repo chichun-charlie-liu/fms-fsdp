@@ -28,6 +28,10 @@ def main(**kwargs):
     # get configs
     cfg = config.train_config()
     update_config(cfg, **kwargs)
+    # [CL] make sure YOCO specific values exist and default to those in YOCO paper/repo
+    cfg.sliding_window = kwargs.get("sliding_window", 1024)  # 1st line on page 8 of the paper
+    cfg.max_batch_size = kwargs.get("batch_size", 8)
+
 
     # ensure reproducibility
     torch.cuda.manual_seed(cfg.seed)

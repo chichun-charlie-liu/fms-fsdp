@@ -19,15 +19,15 @@ with torch.no_grad():
 print(output)
 
 # test 2, use previously saved data and labels to calc loss
-zl_coeff: float = 1e-4
-exam_inp = torch.load("exam_inp.pt")
-for batch in exam_inp:
-    inputs = batch["inputs"].unsqueeze(0).to("cuda")  # use one batch of data, keep the batch dim
-    label = batch["labels"].unsqueeze(0).to("cuda")
+# zl_coeff: float = 1e-4
+# exam_inp = torch.load("exam_inp.pt")
+# for batch in exam_inp:
+#     inputs = batch["inputs"].unsqueeze(0).to("cuda")  # use one batch of data, keep the batch dim
+#     label = batch["labels"].unsqueeze(0).to("cuda")
 
-    output = model(inputs)
-    ce_loss = torch.nn.CrossEntropyLoss()
-    loss = ce_loss(output.view(-1, output.size(-1)), label.view(-1).long())
-    loss = loss + zl_coeff * torch.logsumexp(output, dim=-1).pow(2).mean()
-    print(loss)
+#     output = model(inputs)
+#     ce_loss = torch.nn.CrossEntropyLoss()
+#     loss = ce_loss(output.view(-1, output.size(-1)), label.view(-1).long())
+#     loss = loss + zl_coeff * torch.logsumexp(output, dim=-1).pow(2).mean()
+#     print(loss)
 # print(model.clip_grad_norm_(1.0).item())
