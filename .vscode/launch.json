@@ -40,10 +40,11 @@
                 "OMP_NUM_THREADS":"16",
                 "NCCL_BUFFSIZE":"8388608",
                 "LOCAL_RANK":"0",
+                "RANK":"0",
                 "WORLD_SIZE":"1",
 
             },
-            "cwd": "/app/fms-fsdp-fork/", //"~/projects/fms-fsdp-fork/",
+            // "cwd": "/app/fms-fsdp-fork/", //"~/projects/fms-fsdp-fork/",
             "justMyCode": false,
             "args": [
                 "--model_variant","llama_1b",
@@ -58,8 +59,8 @@
                 "--bos_token","None",
                 "--eos_token","128000",
                 "--logical_shards","8",
-                "--ckpt_save_path","/gpfs/cliu/temp",
-                "--ckpt_load_path","/gpfs/cliu/temp",
+                "--ckpt_save_path","./", //"/gpfs/cliu/temp",
+                "--ckpt_load_path","./", //"/gpfs/cliu/temp",
                 "--fsdp_activation_checkpointing","True",
                 "--selective_checkpointing","1",
                 "--sharding_strategy","hsdp",
@@ -81,7 +82,7 @@
                 "--datasets","starcoder-codepile-v02-L1-noGPL,webhose_en,uspto_en,DMMathematics_split,arxiv_en,financial_research_papers,ieee_en,paperswithcode,peS2o,wikipedia_en,stackexchange,Openwebmath_filtered,Algebraic-stack,doabooks_en,LOCbooks,freelaw,pubmedcentral,EDGAR,Earnings_call_transcript,FIDC,sec_filing,FineWebv1.1",
                 "--weights","19,2,1,0.67,0.67,0.67,0.67,0.67,0.67,0.5,0.5,0.5,0.5,0.5,0.5,1,1,0.375,0.375,0.375,0.375,67.5",
                 "--tracker","tensorboard", //disable this for debug
-                "--tracker_dir","/gpfs/cliu/tracker_log",
+                "--tracker_dir","./", //"/gpfs/cliu/tracker_log",
                 "--tracker_project_name","example-project",
                 "--tracker_run_id","yoco_test",
             ]

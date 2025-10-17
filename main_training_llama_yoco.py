@@ -28,10 +28,6 @@ def main(**kwargs):
     # get configs
     cfg = config.train_config()
     update_config(cfg, **kwargs)
-    # [CL] make sure YOCO specific values exist and default to those in YOCO paper/repo
-    cfg.sliding_window = kwargs.get("sliding_window", 1024)  # 1st line on page 8 of the paper
-    cfg.max_batch_size = kwargs.get("batch_size", 8)
-
 
     # ensure reproducibility
     torch.cuda.manual_seed(cfg.seed)
@@ -68,6 +64,10 @@ def main(**kwargs):
 
     # get fms model
     llama_config = get_model_config(cfg.model_variant)
+    # [CL] make sure YOCO specific values exist and default to those in YOCO paper/repo
+    llama_config.sliding_window = kwargs.get("sliding_window", 1024)  # 1st line on page 8 of the paper
+    llama_config.max_batch_size = kwargs.get("batch_size", 8)
+
     if cfg.low_cpu_fsdp:
         with torch.device("meta"):
             model = LLaMA(llama_config)
