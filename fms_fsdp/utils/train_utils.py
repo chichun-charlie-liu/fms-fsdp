@@ -17,7 +17,6 @@ from torch.distributed.fsdp import ShardingStrategy
 
 from fms_fsdp.policies import *
 
-logger = logging.getLogger(__name__)
 
 
 def train(
@@ -34,6 +33,9 @@ def train(
     tokens_seen,
     cp_degree: int = 1,
 ):
+    if rank == 0:
+        logger = logging.getLogger(__name__)
+
     if cfg.tracker and rank == 0:
         if cfg.tracker not in ["wandb", "aim", "tensorboard"]:
             raise ValueError(f"tracker {cfg.tracker} not supported.")
