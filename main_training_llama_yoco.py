@@ -44,7 +44,7 @@ def main(**kwargs):
         )
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.INFO)
-        logger.info(f"--> running with these configs {cfg}")
+        print(f"--> running with these configs {cfg}")
 
     # some setups
     setup()
@@ -78,17 +78,17 @@ def main(**kwargs):
 
     if rank == 0:
         total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-        logger.info(f"\n--> model has {total_params / 1e6} Million params\n")
+        print(f"\n--> model has {total_params / 1e6} Million params\n")
 
     # get data loader
     if rank == 0:
-        logger.info("Constructing datasets...")
+        print("Constructing datasets...")
     if not cfg.use_dummy_dataset:
         train_loader = get_data_loader(cfg, rank, world_size, world_size)
     else:
         train_loader = get_dummy_loader(cfg, rank, world_size)
     if rank == 0:
-        logger.info("Datasets constructed!")
+        print("Datasets constructed!")
 
     # FSDP
     model = FSDP(
@@ -111,13 +111,13 @@ def main(**kwargs):
     # fsdp activation checkpointing
     if cfg.fsdp_activation_checkpointing:
         if rank == 0:
-            logger.info(f"--> applying FSDP activation checkpointing...")
+            print(f"--> applying FSDP activation checkpointing...")
         apply_selective_ac(model, p=cfg.selective_checkpointing)
 
     # torch compile
     if cfg.use_torch_compile:
         if rank == 0:
-            logger.info(f"--> enabling torch compile...")
+            print(f"--> enabling torch compile...")
         # the default accumulated_cache_size_limit=64 is not enough for 70b model, so we make it 128 here
         torch._dynamo.config.accumulated_cache_size_limit = 128
         model = torch.compile(model)
@@ -165,7 +165,7 @@ def main(**kwargs):
 
     # Train
     if rank == 0:
-        logger.info(f"Training for {cfg.num_steps} steps")
+        print(f"Training for {cfg.num_steps} steps")
     train(
         cfg,
         model,

@@ -49,7 +49,7 @@ def train(
             except ImportError:
                 raise ImportError("tracker is set to wandb but wandb is not installed.")
 
-            logger.info("--> wandb is enabled!")
+            print("--> wandb is enabled!")
             try:
                 wandb.init(
                     project=project_name,
@@ -70,7 +70,7 @@ def train(
             except ImportError:
                 raise ImportError("tracker is set to aim but aim is not installed.")
 
-            logger.info("--> aim is enabled!")
+            print("--> aim is enabled!")
             run = Run(
                 experiment=project_name,
                 repo=tracker_dir,
@@ -150,22 +150,22 @@ def train(
                     device=torch.cuda.current_device()
                 )
 
-                logger.info("step:", batch_idx)
-                logger.info("loss:", current_loss)
-                logger.info("LR:", current_lr)
-                logger.info("tokens seen:", total_tokens_seen)
-                logger.info("gradient norm:", current_gnorm)
-                logger.info("reserved memory:", reserved_mem)
-                logger.info("allocated memory:", allocated_mem)
-                logger.info("current step time:", current_step_time)
-                logger.info("overall step time:", overall_step_time)
-                logger.info("current token per gpu per sec:", current_throughput)
-                logger.info("overall token per gpu per sec:", overall_throughput)
-                logger.info(
+                print("step:", batch_idx)
+                print("loss:", current_loss)
+                print("LR:", current_lr)
+                print("tokens seen:", total_tokens_seen)
+                print("gradient norm:", current_gnorm)
+                print("reserved memory:", reserved_mem)
+                print("allocated memory:", allocated_mem)
+                print("current step time:", current_step_time)
+                print("overall step time:", overall_step_time)
+                print("current token per gpu per sec:", current_throughput)
+                print("overall token per gpu per sec:", overall_throughput)
+                print(
                     "overall token per day:",
                     int(new_tokens_seen / elapsed_time * 3600 * 24),
                 )
-                logger.info(f"Total tok/step: {world_size * cfg.batch_size * cfg.seq_length}")
+                print(f"Total tok/step: {world_size * cfg.batch_size * cfg.seq_length}")
                 if cfg.tracker:
                     vals_to_track = {
                         "learning rate": current_lr,
@@ -219,11 +219,11 @@ def get_mixed_precision_policy(cfg, rank):
         if bf16_ready:
             mixed_precision_policy = bfSixteen
             if rank == 0:
-                logger.info("bFloat16 enabled for mixed precision - using bfSixteen policy")
+                print("bFloat16 enabled for mixed precision - using bfSixteen policy")
         else:
             mixed_precision_policy = fpSixteen
             if rank == 0:
-                logger.info("FP16 enabled")
+                print("FP16 enabled")
     else:
         mixed_precision_policy = None
 
@@ -249,7 +249,7 @@ def get_policies(cfg, rank, block):
     else:
         sharding_strategy = ShardingStrategy.FULL_SHARD
     if rank == 0:
-        logger.info(f"Sharding strategy = {cfg.sharding_strategy}")
+        print(f"Sharding strategy = {cfg.sharding_strategy}")
 
     # ac handler
     apply_selective_ac = partial(apply_fsdp_checkpointing, block=block)
