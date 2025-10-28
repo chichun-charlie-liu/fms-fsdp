@@ -193,6 +193,8 @@ def train(
                 tokens_seen=tokens_seen + new_tokens_seen,
             )
 
+    if rank == 0 and cfg.tracker == "tensorboard":
+        writer.close()
     return train_loss
 
 
