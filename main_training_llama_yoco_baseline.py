@@ -40,7 +40,7 @@ def main(**kwargs):
 
     if rank == 0:
         logging.basicConfig(
-            filename=f"{cfg.ckpt_save_path}/{cfg.model_variant}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+            # filename=f"{cfg.ckpt_save_path}/{cfg.model_variant}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         )
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.INFO)
