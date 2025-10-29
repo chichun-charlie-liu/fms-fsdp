@@ -6,7 +6,7 @@ import fire
 import logging
 import torch
 import torch.optim as optim
-from fms.models.llama_yoco import LLaMA, LLaMABlockYOCO
+from fms.models.llama_yoco import LLaMA, LLaMABlockYOCO  # NOTE imported from llama_yoco
 from torch import distributed as dist
 from torch.distributed.fsdp import FullyShardedDataParallel as FSDP
 from torch.optim.lr_scheduler import LambdaLR
@@ -67,6 +67,12 @@ def main(**kwargs):
     # [CL] make sure YOCO specific values exist and default to those in YOCO paper/repo
     llama_config.sliding_window = kwargs.get("sliding_window", 1024)  # 1st line on page 8 of the paper
     llama_config.max_batch_size = kwargs.get("batch_size", 8)
+    llama_config.nlayers_selfdec = kwargs.get("nlayers_selfdec", llama_config.nlayers//2)
+    llama_config.nlayers_crossdec = kwargs.get("nlayers_crossdec", llama_config.nlayers//2)
+    assert llama_config.nlayers_selfdec + llama_config.nlayers_crossdec == llama_config.nlayers, (
+        "Total number of layers is inconsistent."
+        "Please check nlayers, nlayers_selfdec, and nlayers_crossdec."
+    )
 
     if cfg.low_cpu_fsdp:
         with torch.device("meta"):
