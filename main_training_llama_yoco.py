@@ -84,6 +84,7 @@ def main(**kwargs):
 
     if rank == 0:
         total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+        print(model)
         print(f"\n--> model has {total_params / 1e6} Million params\n")
 
     # get data loader
